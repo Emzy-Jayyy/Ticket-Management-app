@@ -1,9 +1,14 @@
 import { useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom"; // ADDED useNavigate
 import DecorativeCircle from "../components/DecorativeCircle";
 import { Ticket } from "lucide-react";
 import { saveSession } from "../utils/storage";
 
-const AuthPage = ({ isLogin, onLoginSuccess, onNavigate, showToast }) => {
+const AuthPage = ({ isLogin, onLoginSuccess, showToast }) => {
+  const navigate = useNavigate(); // ADDED: useNavigate hook
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/dashboard"; // Redirect to dashboard after login
+
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -42,7 +47,9 @@ const AuthPage = ({ isLogin, onLoginSuccess, onNavigate, showToast }) => {
       isLogin ? "Login successful!" : "Account created successfully!",
       "success"
     );
-    onNavigate("dashboard");
+    
+    // FIXED: Use navigate instead of onNavigate
+    navigate(from, { replace: true });
   };
 
   return (
@@ -135,7 +142,7 @@ const AuthPage = ({ isLogin, onLoginSuccess, onNavigate, showToast }) => {
 
         <div className="mt-6 text-center">
           <button
-            onClick={() => onNavigate(isLogin ? "signup" : "login")}
+            onClick={() => navigate(isLogin ? "/signup" : "/login")} // FIXED
             className="text-indigo-600 hover:underline"
           >
             {isLogin
@@ -146,7 +153,7 @@ const AuthPage = ({ isLogin, onLoginSuccess, onNavigate, showToast }) => {
 
         <div className="mt-4 text-center">
           <button
-            onClick={() => onNavigate("landing")}
+            onClick={() => navigate("/")} // FIXED
             className="text-gray-600 hover:underline text-sm"
           >
             Back to Home

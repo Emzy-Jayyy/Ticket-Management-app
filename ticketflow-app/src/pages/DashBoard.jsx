@@ -1,6 +1,9 @@
+import { useNavigate } from "react-router-dom";
 import { CheckCircle, Clock, Ticket, XCircle } from "lucide-react";
 
-const Dashboard = ({ user, tickets, onNavigate, onLogout }) => {
+const Dashboard = ({ tickets }) => {
+  const navigate = useNavigate(); // FIXED: Added useNavigate hook
+
   const stats = {
     total: tickets.length,
     open: tickets.filter((t) => t.status === "open").length,
@@ -66,7 +69,7 @@ const Dashboard = ({ user, tickets, onNavigate, onLogout }) => {
           </h2>
           <div className="space-y-3">
             <button
-              onClick={() => onNavigate("tickets")}
+              onClick={() => navigate("/tickets")} // FIXED: Now uses navigate properly
               className="w-full flex items-center justify-between px-6 py-4 bg-indigo-50 hover:bg-indigo-100 rounded-lg transition"
             >
               <span className="flex items-center space-x-3">
@@ -83,7 +86,7 @@ const Dashboard = ({ user, tickets, onNavigate, onLogout }) => {
 
       <footer className="bg-gray-900 text-white py-8 mt-12">
         <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <p>&copy; 2025 TicketFlow. All rights reserved.</p>
+          <p>&copy; 2025 TicketHub. All rights reserved.</p>
         </div>
       </footer>
     </div>
